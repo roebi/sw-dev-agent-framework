@@ -72,7 +72,7 @@ jobs:
           path: dist/
 
       - name: Publish to PyPI (Trusted Publishing - no API token needed)
-        uses: pypa/gh-action-pypi-publish@76f52bc884231f9c6c2e3ae86b2b2f5f55439f47
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
         with:
           attestations: true
 
