@@ -1,7 +1,6 @@
 """
 TDD - RED phase tests for SW dev Orchestrator.
 """
-import pytest
 from sw_dev_agent.phases import Phase, PhaseStatus, PhaseResult
 from sw_dev_agent.orchestrator import Orchestrator, HandoverState
 

@@ -2,8 +2,6 @@
 TDD - tests for the Typer CLI entry point.
 Uses typer.testing.CliRunner - no subprocess, no I/O side effects.
 """
-import os
-import pytest
 from typer.testing import CliRunner
 from sw_dev_agent.cli import app
 from sw_dev_agent.phases import Phase

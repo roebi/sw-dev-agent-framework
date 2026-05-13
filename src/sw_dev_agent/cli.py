@@ -4,9 +4,8 @@ sw-dev-agent CLI - Orchestrate software development via TDD-driven skill pipelin
 import typer
 from rich.console import Console
 from rich.table import Table
-from rich import print as rprint
 
-from sw_dev_agent.phases import Phase, PhaseStatus, PhaseResult
+from sw_dev_agent.phases import Phase
 from sw_dev_agent.orchestrator import Orchestrator, PHASE_SKILL_MAP
 
 app = typer.Typer(
@@ -23,7 +22,7 @@ def start(
 ) -> None:
     """Start a new SW development pipeline from a goal statement."""
     orch = Orchestrator(goal=goal)
-    console.print(f"\n[bold green]SW Dev Agent[/bold green] - pipeline started")
+    console.print("\n[bold green]SW Dev Agent[/bold green] - pipeline started")
     console.print(f"Goal: [italic]{goal}[/italic]\n")
     _print_pipeline_status(orch)
     console.print(f"\nActive skill: [bold cyan]{orch.active_skill()}[/bold cyan]")
