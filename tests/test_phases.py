@@ -2,7 +2,6 @@
 TDD - RED phase tests for SW dev framework phases.
 All tests must fail before production code is written.
 """
-import pytest
 from sw_dev_agent.phases import Phase, PhaseStatus, PhaseResult
 
 
