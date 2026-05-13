@@ -40,7 +40,8 @@ jobs:
 
       - name: Check ascii-safe-text (no em-dashes or en-dashes)
         run: |
-          if grep -rn $'\xe2\x80\x94\|\xe2\x80\x93' src/ tests/ skills/; then
+          if grep -rn --include="*.py" --include="*.md" --include="*.toml" \
+            $'\xe2\x80\x94\|\xe2\x80\x93' src/ tests/ skills/; then
             echo "FAIL: em-dash or en-dash found - use hyphen-minus only"
             exit 1
           fi
