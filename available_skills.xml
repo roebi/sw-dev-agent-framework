@@ -1,0 +1,38 @@
+<available_skills>
+  <skill>
+    <name>apply-tdd-loop-en</name>
+    <description>Applies the Test-Driven Development (TDD) cycle as an agentic loop of RED -&gt; GREEN -&gt; REFACTOR iterations until all requirements are covered or all existing code paths are tested. Use when a user or agent wants to write code strictly test-first, add missing tests to existing code, or drive a full TDD session for a module, class, or function. Activate for trigger phrases like: "apply TDD", "write this test-first", "do a TDD loop", "TDD cycle for", "drive TDD on", "red green refactor", or "add tests then implement".
+</description>
+    <location>./skills/apply-tdd-loop-en/SKILL.md</location>
+  </skill>
+  <skill>
+    <name>code-review-en</name>
+    <description>Performs a structured code review against requirements and architecture docs. Checks correctness, test coverage, security, KISS/SOLID principles, and code style. Produces a review-checklist.md with pass/fail per criterion and a list of required fixes. Use after the implement phase and before release. Activate for trigger phrases like: "code review", "review this code", "review phase", "check the implementation", "audit the code", "does the code meet requirements", or "pre-release review".
+</description>
+    <location>./skills/code-review-en/SKILL.md</location>
+  </skill>
+  <skill>
+    <name>design-architecture-en</name>
+    <description>Produces an architecture design for a software project from a structured requirements list. Outputs architecture.md covering module structure, data flow, technology choices, and testability constraints. Use when requirements are complete and the next step is planning the structure before writing any code. Activate for trigger phrases like: "design the architecture", "architecture phase", "plan the module structure", "create an architecture doc", "design this system", or "how should we structure this project".
+</description>
+    <location>./skills/design-architecture-en/SKILL.md</location>
+  </skill>
+  <skill>
+    <name>gather-requirements-en</name>
+    <description>Transforms a vague goal or feature request into a structured, testable requirements list. Produces a requirements.md with numbered functional and non-functional requirements. Use when a user or agent starts a new software project and needs to turn an idea into concrete, implementable requirements before any code or design work begins. Activate for trigger phrases like: "gather requirements", "write requirements for", "what are the requirements", "define the requirements", "requirements phase", or "turn this goal into requirements".
+</description>
+    <location>./skills/gather-requirements-en/SKILL.md</location>
+  </skill>
+  <skill>
+    <name>orchestrate-sw-dev-en</name>
+    <description>Orchestrates the full software development lifecycle as an agentic pipeline. Delegates each phase to a focused sub-skill in order: gather requirements, design architecture, implement with TDD, review code, and release. Use when a user or agent wants to build a software project from a goal statement to a released artifact using a structured, test-driven process. Activate for trigger phrases like: "build a software project", "develop this from scratch", "orchestrate sw development", "run the full dev pipeline", or "implement this end to end".
+</description>
+    <location>./skills/orchestrate-sw-dev-en/SKILL.md</location>
+  </skill>
+  <skill>
+    <name>release-sw-project-en</name>
+    <description>Performs the release phase of a software project: bumps version, generates changelog, creates a git tag, and publishes the artifact (PyPI, npm, or GitHub Release). Uses semver, conventional commits, and PyPI Trusted Publishing (OIDC) for Python packages. Use after code review passes with zero critical or major findings. Activate for trigger phrases like: "release the project", "release phase", "publish to PyPI", "create a release", "bump version and tag", "cut a release", or "ship it".
+</description>
+    <location>./skills/release-sw-project-en/SKILL.md</location>
+  </skill>
+</available_skills>
