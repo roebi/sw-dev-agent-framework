@@ -3,9 +3,9 @@ SW dev framework - Phase definitions.
 Maps each phase of software development to an agent skill.
 """
 from __future__ import annotations
-from enum import Enum
+
 from dataclasses import dataclass, field
-from typing import Optional
+from enum import Enum
 
 
 class Phase(Enum):
@@ -16,7 +16,7 @@ class Phase(Enum):
     RELEASE = "release"
 
     @classmethod
-    def ordered(cls) -> list["Phase"]:
+    def ordered(cls) -> list[Phase]:
         return [
             cls.REQUIREMENTS,
             cls.DESIGN,
@@ -25,7 +25,7 @@ class Phase(Enum):
             cls.RELEASE,
         ]
 
-    def next(self) -> Optional["Phase"]:
+    def next(self) -> Phase | None:
         ordered = Phase.ordered()
         idx = ordered.index(self)
         if idx + 1 < len(ordered):
