@@ -3,11 +3,12 @@ SW dev framework - Orchestrator.
 Coordinates the full software development lifecycle via phases and skills.
 """
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Optional
+
 import yaml
 
-from sw_dev_agent.phases import Phase, PhaseStatus, PhaseResult
+from sw_dev_agent.phases import Phase, PhaseResult, PhaseStatus
 
 # Maps each phase to the skill that handles it
 PHASE_SKILL_MAP: dict[Phase, str] = {
@@ -41,7 +42,7 @@ class HandoverState:
         return yaml.dump(data, default_flow_style=False)
 
     @classmethod
-    def from_yaml(cls, yaml_str: str) -> "HandoverState":
+    def from_yaml(cls, yaml_str: str) -> HandoverState:
         data = yaml.safe_load(yaml_str)
         state = cls(goal=data["goal"])
         state.current_phase = Phase(data["current_phase"])
@@ -70,7 +71,7 @@ class Orchestrator:
     def is_done(self) -> bool:
         return self.state.is_complete()
 
-    def active_skill(self) -> Optional[str]:
+    def active_skill(self) -> str | None:
         if self.is_done():
             return None
         return PHASE_SKILL_MAP.get(self.state.current_phase)

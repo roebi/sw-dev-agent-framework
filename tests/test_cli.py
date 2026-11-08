@@ -3,6 +3,7 @@ TDD - tests for the Typer CLI entry point.
 Uses typer.testing.CliRunner - no subprocess, no I/O side effects.
 """
 from typer.testing import CliRunner
+
 from sw_dev_agent.cli import app
 from sw_dev_agent.phases import Phase
 
@@ -71,7 +72,7 @@ class TestStatusCommand:
         monkeypatch.chdir(tmp_path)
         # Write a fully-complete handover state
         from sw_dev_agent.orchestrator import HandoverState
-        from sw_dev_agent.phases import PhaseStatus, PhaseResult
+        from sw_dev_agent.phases import PhaseResult, PhaseStatus
         state = HandoverState(goal="Finished project")
         for phase in Phase.ordered():
             state.results.append(PhaseResult(phase=phase, status=PhaseStatus.DONE))

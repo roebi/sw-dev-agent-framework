@@ -5,8 +5,8 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from sw_dev_agent.orchestrator import PHASE_SKILL_MAP, Orchestrator
 from sw_dev_agent.phases import Phase
-from sw_dev_agent.orchestrator import Orchestrator, PHASE_SKILL_MAP
 
 app = typer.Typer(
     name="sw-dev-agent",
