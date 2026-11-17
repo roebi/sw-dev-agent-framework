@@ -16,10 +16,16 @@ LABEL org.opencontainers.image.title="sw-dev-agent-framework" \
       org.opencontainers.image.source="https://github.com/roebi/sw-dev-agent-framework" \
       org.opencontainers.image.licenses="MIT AND CC-BY-NC-SA-4.0"
 COPY --from=build /dist /dist
+# Debian security updates newer than the base image (Trivy: zlib1g CVE-2026-85091).
+RUN apt-get update \
+    && apt-get upgrade -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+# pip is only needed for this install. It vendors pkg_resources from
+# setuptools 70.3.0 (Trivy: CVE-2025-47273), so it is removed afterwards.
 RUN WHEEL="$(ls /dist/*.whl)" \
-    && pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir "${WHEEL}[mcp]" \
     && rm -rf /dist \
+    && python -m pip uninstall -y pip \
     && useradd --uid 10001 --no-create-home --shell /usr/sbin/nologin app
 COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
 USER 10001

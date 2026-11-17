@@ -68,6 +68,10 @@ cloning this repository (issue #23).
   container.
 - CI scanner images (semgrep, Trivy, ZAP) are pinned by version and
   digest.
+- Container image: Debian security updates are applied on build
+  (zlib1g CVE-2026-85091), and pip is removed after installing the
+  package (its vendored setuptools 70.3.0 pkg_resources, CVE-2025-47273).
+- Trivy and ZAP findings are reported as GitHub annotations.
 
 ### Fixed
 

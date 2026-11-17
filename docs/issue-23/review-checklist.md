@@ -57,6 +57,7 @@ review findings create rework here, not follow-up issues):
 | 2 | MCP over HTTP had no DNS-rebinding host/origin checks when bound to 0.0.0.0 (container) | src/sw_dev_agent/mcp_server.py | minor | FIXED: localhost-only Host/Origin checks for every bind address | tests/test_mcp_server.py::TestDnsRebindingProtection |
 | 3 | release.yml "Create GitHub Release" only uploaded a workflow artifact; CHANGELOG was never published | .github/workflows/release.yml | minor | FIXED: real GitHub Release with the CHANGELOG section as notes; release fails if the section is missing | tests/test_changelog.py |
 | 4 | CI "Test Python 3.13" ran on 3.12 without the [mcp] extra (.python-version pin); MCP tests skipped silently, coverage 78.99% -> CI red (found in PR #24 CI run) | .github/workflows/ci.yml, tests/test_mcp_server.py | major | FIXED: UV_PYTHON per matrix entry, interpreter check step, no silent skip | CI steps replayed locally in a fresh clone on 3.12 and 3.13: 254+ passed, 96% |
+| 5 | Trivy (CI): zlib1g CVE-2026-85091 HIGH in the python:3.14-slim base (fixed in Debian +deb13u1); setuptools 70.3.0 CVE-2025-47273 HIGH, vendored by pip as pkg_resources | Dockerfile | major | FIXED: Debian security updates applied in the image; pip uninstalled after installing the wheel (not needed at runtime) | tests/test_container_files.py; install-then-remove-pip simulated locally + e2e OK; CI Trivy re-run |
 
 Not a finding: the Socket security bot comment on PR #24 lists the five new
 direct dependencies (bandit, mcp, connexion, openapi-spec-validator, httpx)
@@ -65,5 +66,5 @@ with scores 96-100 and no alerts.
 ```yaml
 phase: review
 status: done
-output: review-checklist.md - 0 open findings (4 found, 4 reworked); R-CI-005/006 pending CI run
+output: review-checklist.md - 0 open findings (5 found, 5 reworked); R-CI-005/006 pending CI run
 ```

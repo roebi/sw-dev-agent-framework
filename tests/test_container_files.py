@@ -43,6 +43,17 @@ class TestDockerfile:
         assert "HEALTHCHECK" in text
         assert "/health" in read("entrypoint.sh")
 
+    def test_runtime_applies_debian_security_updates(self):
+        # Trivy finding: zlib1g CVE-2026-85091 fixed in a Debian update newer than the base image.
+        runtime = read("Dockerfile").rsplit("\nFROM ", 1)[1]
+        assert "apt-get upgrade" in runtime
+        assert "rm -rf /var/lib/apt/lists/*" in runtime
+
+    def test_runtime_has_no_pip(self):
+        # Trivy finding: pip vendors pkg_resources from setuptools 70.3.0 (CVE-2025-47273).
+        runtime = read("Dockerfile").rsplit("\nFROM ", 1)[1]
+        assert "pip uninstall -y pip" in runtime
+
     def test_uses_entrypoint(self):
         assert "entrypoint.sh" in read("Dockerfile")
 

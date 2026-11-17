@@ -14,7 +14,7 @@ results:
     output: 246 tests passing, coverage 96%, e2e OK on installed wheel
   - phase: review
     status: done
-    output: docs/issue-23/review-checklist.md - 4 findings, all reworked
+    output: docs/issue-23/review-checklist.md - 5 findings, all reworked
   - phase: release
     status: blocked
     output: waiting for owner OK to push branch, merge PR and push tag v2.0.0
