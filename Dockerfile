@@ -1,7 +1,7 @@
 # sw-dev-agent-framework - container run mode (R-CTR-001..005)
 # Build with ./podman_build.sh, run with ./podman_run.sh [serve|mcp]
 
-FROM docker.io/library/python:3.14-slim AS build
+FROM docker.io/library/python:3.15-slim AS build
 COPY --from=ghcr.io/astral-sh/uv:0.13.8 /uv /usr/local/bin/uv
 WORKDIR /src
 COPY pyproject.toml uv.lock README.md CHANGELOG.md hatch_build.py ./
@@ -11,7 +11,7 @@ COPY skills ./skills
 ARG SKILLS_COMMIT=unknown
 RUN SKILLS_COMMIT="${SKILLS_COMMIT}" uv build --wheel --out-dir /dist
 
-FROM docker.io/library/python:3.14-slim
+FROM docker.io/library/python:3.15-slim
 LABEL org.opencontainers.image.title="sw-dev-agent-framework" \
       org.opencontainers.image.source="https://github.com/roebi/sw-dev-agent-framework" \
       org.opencontainers.image.licenses="MIT AND CC-BY-NC-SA-4.0"
