@@ -123,9 +123,14 @@ def _default_server(catalog: SkillCatalog | None, info: BuildInfo | None) -> Ser
 
 def create_http_app(host: str, catalog: SkillCatalog | None = None,
                     info: BuildInfo | None = None) -> Starlette:
-    """Streamable HTTP MCP endpoint at MCP_PATH (R-MCP-004)."""
+    """Stateless streamable HTTP MCP endpoint at MCP_PATH (R-MCP-004)."""
+    # stateless_http: handshake-era clients get no session either; every
+    # request stands alone (2026-07-28 clients are stateless anyway).
     return _default_server(catalog, info).streamable_http_app(
-        streamable_http_path=MCP_PATH, host=host, transport_security=LOCAL_TRANSPORT_SECURITY
+        streamable_http_path=MCP_PATH,
+        host=host,
+        transport_security=LOCAL_TRANSPORT_SECURITY,
+        stateless_http=True,
     )
 
 

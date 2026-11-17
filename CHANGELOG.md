@@ -5,6 +5,24 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [2.0.1] - 2026-11-17
+
+Patch release after 2.0.0: MCP over HTTP is stateless for every client,
+and a help text fix.
+
+### Changed
+
+- MCP over streamable HTTP is stateless for all clients: clients using
+  the handshake-era protocol (up to 2025-11-25) no longer get a session;
+  every request stands alone, as with the stateless 2026-07-28 protocol.
+
+### Fixed
+
+- `sw-dev-agent --help` showed "(requires the  extra)" for the `mcp`
+  command: Rich markup swallowed `[mcp]`.
+
 ## [2.0.0] - 2026-11-17
 
 Major release: the skills are now usable with a single install, without
@@ -117,6 +135,8 @@ cloning this repository (issue #23).
   requirements.md, with testability/atomicity/clarity validation gates
   and an out-of-scope section.
 
+[Unreleased]: https://github.com/roebi/sw-dev-agent-framework/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/roebi/sw-dev-agent-framework/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v0.1.1...v1.2.0
 [0.1.1]: https://github.com/roebi/sw-dev-agent-framework/releases/tag/v0.1.1

@@ -92,7 +92,7 @@ def mcp(
     port: int | None = PORT_OPTION,
     stdio: bool = typer.Option(False, "--stdio", help="Serve MCP over stdin/stdout instead of HTTP."),
 ) -> None:
-    """Serve the skills API as MCP tools (requires the [mcp] extra)."""
+    """Serve the skills API as MCP tools (requires the \\[mcp] extra)."""
     try:
         mcp_module = server.load_mcp_module()
     except ImportError:
