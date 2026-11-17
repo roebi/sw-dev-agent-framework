@@ -71,3 +71,55 @@ class TestBuildInfo:
         f = tmp_path / "_build_info.json"
         f.write_text("{not json")
         assert build_info.skills_commit(f) == "unknown"
+
+
+class TestLicense:
+    """G-9: Skills CC BY-NC-SA 4.0, Code MIT."""
+
+    def _metadata(self, wheel) -> str:
+        with zipfile.ZipFile(wheel) as z:
+            name = next(n for n in z.namelist() if n.endswith(".dist-info/METADATA"))
+            return z.read(name).decode()
+
+    def test_license_expression(self, wheel):
+        assert "License-Expression: MIT AND CC-BY-NC-SA-4.0" in self._metadata(wheel)
+
+    def test_license_files_in_wheel(self, wheel):
+        with zipfile.ZipFile(wheel) as z:
+            names = z.namelist()
+        assert any(n.endswith("licenses/LICENSES/MIT.txt") for n in names)
+        assert any(n.endswith("licenses/LICENSES/CC-BY-NC-SA-4.0.txt") for n in names)
+
+    def test_skills_declare_cc_license(self):
+        for skill_md in SKILLS.glob("*/SKILL.md"):
+            assert "license: CC BY-NC-SA 4.0" in skill_md.read_text()
+
+
+class TestHookCommitLookup:
+    @pytest.fixture
+    def hook(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("hatch_build", REPO / "hatch_build.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    def test_env_skills_commit_without_git(self, hook, tmp_path, monkeypatch):
+        monkeypatch.setenv("SKILLS_COMMIT", "fromenv")
+        monkeypatch.setenv("GITHUB_SHA", "fromgithub")
+        assert hook.skills_commit(tmp_path) == "fromenv"
+
+    def test_github_sha_fallback(self, hook, tmp_path, monkeypatch):
+        monkeypatch.delenv("SKILLS_COMMIT", raising=False)
+        monkeypatch.setenv("GITHUB_SHA", "fromgithub")
+        assert hook.skills_commit(tmp_path) == "fromgithub"
+
+    def test_sdist_info_file(self, hook, tmp_path, monkeypatch):
+        monkeypatch.setenv("SKILLS_COMMIT", "fromenv")
+        (tmp_path / "_build_info.json").write_text('{"skills_commit": "fromsdist"}')
+        assert hook.skills_commit(tmp_path) == "fromsdist"
+
+    def test_unknown_when_nothing(self, hook, tmp_path, monkeypatch):
+        monkeypatch.delenv("SKILLS_COMMIT", raising=False)
+        monkeypatch.delenv("GITHUB_SHA", raising=False)
+        assert hook.skills_commit(tmp_path) == "unknown"

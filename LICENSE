@@ -1,0 +1,12 @@
+sw-dev-agent-framework is dual licensed by content type:
+
+- Skills (everything under skills/, the SKILL.md files, also when served
+  by the API or the MCP server): CC BY-NC-SA 4.0
+  Full text: LICENSES/CC-BY-NC-SA-4.0.txt
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+- Code (everything else, including src/, tests/, scripts and container
+  files): MIT
+  Full text: LICENSES/MIT.txt
+
+SPDX-License-Identifier: MIT AND CC-BY-NC-SA-4.0

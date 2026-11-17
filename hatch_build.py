@@ -3,8 +3,8 @@ Hatch build hook - bundles ./skills into the wheel and records the git commit
 of the skill sources (R-PKG-001..004).
 
 Commit lookup order: git HEAD of this checkout, then _build_info.json at the
-sdist root (written when the sdist was built from git), then GITHUB_SHA,
-then "unknown".
+sdist root (written when the sdist was built from git), then the env vars
+SKILLS_COMMIT (container build) and GITHUB_SHA, then "unknown".
 """
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ def skills_commit(root: Path) -> str:
             return str(json.loads(info.read_text(encoding="utf-8"))["skills_commit"])
         except (ValueError, KeyError):
             pass
-    return os.environ.get("GITHUB_SHA") or "unknown"
+    return os.environ.get("SKILLS_COMMIT") or os.environ.get("GITHUB_SHA") or "unknown"
 
 
 class CustomBuildHook(BuildHookInterface):

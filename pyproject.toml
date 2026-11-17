@@ -3,6 +3,8 @@ name = "sw-dev-agent-framework"
 version = "2.0.0"
 description = "An agentic framework that does exactly one thing: software development."
 readme = "README.md"
+license = "MIT AND CC-BY-NC-SA-4.0"
+license-files = ["LICENSE", "LICENSES/*.txt"]
 requires-python = ">=3.12"
 dependencies = [
     "connexion[uvicorn]>=3.3.0",
@@ -49,4 +51,4 @@ mcp = [
 [tool.hatch.build.targets.sdist.hooks.custom]
 
 [tool.hatch.build.targets.sdist]
-include = ["src", "skills", "tests", "hatch_build.py", "README.md", "CHANGELOG.md"]
+include = ["src", "skills", "tests", "hatch_build.py", "README.md", "CHANGELOG.md", "LICENSE", "LICENSES"]
