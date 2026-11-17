@@ -17,4 +17,4 @@ results:
     output: docs/issue-23/review-checklist.md - 5 findings, all reworked
   - phase: release
     status: blocked
-    output: waiting for owner OK to push branch, merge PR and push tag v2.0.0
+    output: all CI gates green on PR #24 (run 44088137535); next: merge PR #24, tag v2.0.0 on main, push tag

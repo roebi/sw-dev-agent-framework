@@ -11,9 +11,9 @@ Reviewer: Claude (code-review-en), 2026-11-17. Owner sign-off: pending (PR revie
 | R-API-001..010 | tests/test_api.py | yes | response validation on; 400/404 problem+json; no traceback on 500 |
 | R-CLI-001..007 | tests/test_server.py, tests/test_cli.py | yes | port 0, env/flag order, port in use -> exit 1 |
 | R-MCP-001..006 | tests/test_mcp_server.py, tests/test_server.py | yes | tool list derived from spec; same content as HTTP |
-| R-CTR-001..005 | tests/test_container_files.py (static) | yes | real build/run/healthcheck/reentrancy only in CI job `container` |
+| R-CTR-001..005 | tests/test_container_files.py (static) + CI job `container` | yes | build twice, run twice, healthcheck, smoke, MCP mode: green in CI run 44088137535 |
 | R-CI-001..004, 007 | CI jobs test, sast, e2e | yes (local) | bandit 0 findings, semgrep 0 findings, e2e OK on 3.12 and 3.13 |
-| R-CI-005, 006 | CI job `container` | PENDING CI | Trivy and ZAP not installed locally |
+| R-CI-005, 006 | CI job `container` | yes | Trivy and ZAP green in CI run 44088137535 (after rework of finding 5) |
 
 ## Architecture Compliance
 
@@ -66,5 +66,5 @@ with scores 96-100 and no alerts.
 ```yaml
 phase: review
 status: done
-output: review-checklist.md - 0 open findings (5 found, 5 reworked); R-CI-005/006 pending CI run
+output: review-checklist.md - 0 open findings (5 found, 5 reworked); all CI gates green (run 44088137535)
 ```
