@@ -130,3 +130,13 @@ class TestRobustness:
         assert r.status_code == 500
         assert "secret internal detail" not in r.text
         assert "Traceback" not in r.text
+
+
+class TestSecurityHeaders:
+    @pytest.mark.parametrize("path", ["/health", "/skills", "/skills/orchestrator",
+                                      "/skills/missing-skill", "/nope"])
+    def test_headers_on_every_response(self, client, path):
+        r = client.get(path)
+        assert r.headers["x-content-type-options"] == "nosniff"
+        assert r.headers["content-security-policy"] == "default-src 'none'; frame-ancestors 'none'"
+        assert r.headers["cache-control"] == "no-store"

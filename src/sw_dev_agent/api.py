@@ -92,8 +92,15 @@ def _resolver(handlers: SkillHandlers) -> Resolver:
     return Resolver(function_resolver=resolve)
 
 
-class MarkdownCharsetMiddleware:
-    """Appends '; charset=utf-8' to text/markdown responses.
+SECURITY_HEADERS = [
+    (b"x-content-type-options", b"nosniff"),
+    (b"content-security-policy", b"default-src 'none'; frame-ancestors 'none'"),
+    (b"cache-control", b"no-store"),
+]
+
+
+class ResponseHeadersMiddleware:
+    """Adds security headers and '; charset=utf-8' to text/markdown responses.
 
     Runs outside Connexion's response validation, which compares the bare
     media type with the spec.
@@ -109,12 +116,15 @@ class MarkdownCharsetMiddleware:
 
         async def send_wrapper(message: dict) -> None:
             if message["type"] == "http.response.start":
-                message["headers"] = [
+                names = {name for name, _ in SECURITY_HEADERS}
+                headers = [
                     (k, b"text/markdown; charset=utf-8")
                     if k.lower() == b"content-type" and v == MARKDOWN.encode()
                     else (k, v)
                     for k, v in message.get("headers", [])
+                    if k.lower() not in names
                 ]
+                message["headers"] = headers + SECURITY_HEADERS
             await send(message)
 
         await self.app(scope, receive, send_wrapper)
@@ -129,5 +139,5 @@ def create_app(catalog: SkillCatalog, info: BuildInfo) -> connexion.AsyncApp:
         strict_validation=True,
         swagger_ui_options=connexion.options.SwaggerUIOptions(swagger_ui=False),
     )
-    app.add_middleware(MarkdownCharsetMiddleware, position=MiddlewarePosition.BEFORE_EXCEPTION)
+    app.add_middleware(ResponseHeadersMiddleware, position=MiddlewarePosition.BEFORE_EXCEPTION)
     return app
