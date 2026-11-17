@@ -1,7 +1,7 @@
 name: Release to PyPI
 
 # Started by publishing a GitHub Release in the web UI, with tag and
-# release name "X.Y.Z" (a leading "v" is accepted too). No commits are
+# release name "vX.Y.Z" (tag without "v" is accepted too). No commits are
 # needed after that: CI gates -> PyPI -> release notes + dists.
 on:
   release:

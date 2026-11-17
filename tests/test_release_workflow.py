@@ -1,5 +1,5 @@
 """Release flow: the owner creates and publishes a GitHub Release in the web
-UI with tag and name 'X.Y.Z' (no 'v'); that event must drive the whole
+UI with tag and name 'vX.Y.Z'; that event must drive the whole
 delivery (CI gates -> PyPI -> release notes + dists) without further commits."""
 from pathlib import Path
 
@@ -40,4 +40,4 @@ def test_publish_needs_all_gates():
 
 def test_changelog_link_uses_release_tag_without_v():
     text = (REPO / "CHANGELOG.md").read_text()
-    assert "[2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...2.0.0" in text
+    assert "[2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...v2.0.0" in text

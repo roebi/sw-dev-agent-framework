@@ -34,7 +34,7 @@ cloning this repository (issue #23).
   SAST, Trivy image scan, OWASP ZAP API scan (DAST) against the running
   container, end-to-end test of the installed wheel. The release
   workflow runs all CI gates and checks that the tag matches the version.
-- Releases: publishing a GitHub Release (tag and name `X.Y.Z`) starts
+- Releases: publishing a GitHub Release (tag and name `vX.Y.Z`) starts
   the release workflow: all CI gates, version and CHANGELOG checks, PyPI
   upload, then the release notes are set to this file's section for that
   version and the wheel and sdist are attached. PyPI project links
@@ -117,6 +117,6 @@ cloning this repository (issue #23).
   requirements.md, with testability/atomicity/clarity validation gates
   and an out-of-scope section.
 
-[2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...2.0.0
+[2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v0.1.1...v1.2.0
 [0.1.1]: https://github.com/roebi/sw-dev-agent-framework/releases/tag/v0.1.1
