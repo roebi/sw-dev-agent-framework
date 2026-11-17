@@ -143,7 +143,80 @@ exit_condition_met: true
 - Update project README badge if applicable
 - Announce on relevant channels
 
-## References
+## Semver Rules and Examples
 
-- `references/semver.md` - semver rules and examples
-- `references/trusted-publishing.md` - PyPI OIDC workflow setup
+Version format: `MAJOR.MINOR.PATCH` (see https://semver.org/spec/v2.0.0.html).
+
+| Change | Bump | Example |
+|---|---|---|
+| Incompatible API or behaviour change (`BREAKING CHANGE:` in commit body, or `!` after the type, e.g. `feat!:`) | MAJOR | 1.4.2 -> 2.0.0 |
+| New backwards-compatible feature (`feat:`) | MINOR | 1.4.2 -> 1.5.0 |
+| Backwards-compatible bug fix only (`fix:`) | PATCH | 1.4.2 -> 1.4.3 |
+| `docs:`, `test:`, `chore:`, `ci:`, `refactor:` only | no release needed | - |
+
+### Rules
+
+- The highest-ranked change since the last tag decides the bump.
+- A bump resets the lower parts: MINOR bump sets PATCH to 0; MAJOR bump sets MINOR and PATCH to 0.
+- While MAJOR is 0 (`0.y.z`), the API is unstable; breaking changes bump MINOR.
+- Never re-use or move a published version tag. A broken release is fixed by a new PATCH release.
+- Software version tags use the form `vX.Y.Z`.
+
+### Examples
+
+```
+v1.2.0..HEAD: fix: handle empty file          -> v1.2.1
+v1.2.0..HEAD: feat: add --output flag         -> v1.3.0
+v1.2.0..HEAD: feat!: drop Python 3.11 support -> v2.0.0
+```
+
+## PyPI Trusted Publishing (OIDC) Setup
+
+Trusted Publishing lets a GitHub Actions workflow publish to PyPI without
+an API token. PyPI trusts a short-lived OIDC token issued by GitHub for a
+specific repository, workflow file and environment.
+
+### One-time setup on PyPI
+
+1. Open https://pypi.org/manage/account/publishing/ (new project) or the
+   project's "Publishing" settings (existing project).
+2. Add a GitHub publisher with:
+   - Owner: `<github-owner>`
+   - Repository: `<repo-name>`
+   - Workflow name: `release.yml`
+   - Environment: `pypi`
+
+### One-time setup on GitHub
+
+Create the environment `pypi` under Settings -> Environments. Optionally
+add required reviewers so every publish needs a manual approval.
+
+### Workflow
+
+```yaml
+on:
+  push:
+    tags: ["v*.*.*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+    permissions:
+      id-token: write   # required for OIDC
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1   # pin to a commit SHA
+        with:
+          attestations: true
+```
+
+### Rules
+
+- Build in a separate job without `id-token: write`; only the publish job gets it.
+- Pin third-party actions to a commit SHA.
+- No `PYPI_API_TOKEN` secret is needed or wanted.

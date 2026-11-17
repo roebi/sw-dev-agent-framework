@@ -12,6 +12,7 @@ SKILLS_DIR = os.path.join(os.path.dirname(__file__), "..", "skills")
 
 EXPECTED_SKILLS = [
     "orchestrate-sw-dev-en",
+    "apply-tdd-loop-en",
     "gather-requirements-en",
     "design-architecture-en",
     "code-review-en",
@@ -126,3 +127,30 @@ class TestSkillBody:
         assert "\u2013" not in content, (
             f"{skill_name}: SKILL.md contains en-dash (use hyphen-minus only)"
         )
+
+
+@pytest.mark.parametrize("skill_name", EXPECTED_SKILLS)
+def test_skill_directory_contains_only_skill_md(skill_name):
+    entries = sorted(os.listdir(os.path.join(SKILLS_DIR, skill_name)))
+    assert entries == ["SKILL.md"], (
+        f"{skill_name}: only SKILL.md allowed, found {entries}"
+    )
+
+
+@pytest.mark.parametrize("skill_name", EXPECTED_SKILLS)
+def test_skill_md_has_no_external_file_references(skill_name):
+    path = os.path.join(SKILLS_DIR, skill_name, "SKILL.md")
+    with open(path, "r") as f:
+        content = f.read()
+    for folder in ("references/", "templates/", "scripts/", "assets/"):
+        assert folder not in content, (
+            f"{skill_name}: SKILL.md points to {folder}; inline it instead"
+        )
+
+
+def test_every_skill_directory_is_expected():
+    found = sorted(
+        d for d in os.listdir(SKILLS_DIR)
+        if os.path.isdir(os.path.join(SKILLS_DIR, d))
+    )
+    assert found == sorted(EXPECTED_SKILLS)
