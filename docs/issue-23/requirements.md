@@ -207,9 +207,14 @@ NFR-07: Stack - Connexion v3 for the HTTP API (issue constraint).
 ## Owner decisions (2026-11-17)
 
 - Q1-Q8: proposed answers accepted.
-- G-1: fixed in this feature (the three reference files were small).
+- G-1: fixed in this feature; per G-7 the content is inlined into the SKILL.md files.
 - G-2: fixed in this feature.
 - G-3: Python 3.11 removed from the CI matrix.
 - G-4: this feature is released as a new major version 2.0.0.
 - G-5: CHANGELOG.md is updated for 2.0.0.
 - G-6: target is a 2.0.0 release on PyPI on 2026-11-17.
+- G-7: every skill directory contains only SKILL.md. Reference or template
+  content a skill needs is inlined into its SKILL.md. Enforced by
+  `test_skill_directory_contains_only_skill_md` and
+  `test_skill_md_has_no_external_file_references`. This also makes Q6 moot:
+  SKILL.md is the complete skill.

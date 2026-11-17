@@ -129,17 +129,23 @@ class TestSkillBody:
         )
 
 
-REFERENCE_RE = re.compile(r"`(references/[A-Za-z0-9_./-]+\.md)`")
+@pytest.mark.parametrize("skill_name", EXPECTED_SKILLS)
+def test_skill_directory_contains_only_skill_md(skill_name):
+    entries = sorted(os.listdir(os.path.join(SKILLS_DIR, skill_name)))
+    assert entries == ["SKILL.md"], (
+        f"{skill_name}: only SKILL.md allowed, found {entries}"
+    )
 
 
 @pytest.mark.parametrize("skill_name", EXPECTED_SKILLS)
-def test_referenced_files_exist(skill_name):
+def test_skill_md_has_no_external_file_references(skill_name):
     path = os.path.join(SKILLS_DIR, skill_name, "SKILL.md")
     with open(path, "r") as f:
         content = f.read()
-    for ref in REFERENCE_RE.findall(content):
-        ref_path = os.path.join(SKILLS_DIR, skill_name, ref)
-        assert os.path.isfile(ref_path), f"{skill_name}: missing {ref}"
+    for folder in ("references/", "templates/", "scripts/", "assets/"):
+        assert folder not in content, (
+            f"{skill_name}: SKILL.md points to {folder}; inline it instead"
+        )
 
 
 def test_every_skill_directory_is_expected():
