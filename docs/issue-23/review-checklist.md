@@ -48,14 +48,22 @@ Reviewer: Claude (code-review-en), 2026-11-17. Owner sign-off: pending (PR revie
 
 None critical or major.
 
-Minor / follow-up (not blocking 2.0.0):
+Minor findings - all reworked in this feature (owner decision 2026-11-17:
+review findings create rework here, not follow-up issues):
 
-1. Scanner images in CI use `:latest` (semgrep, trivy, zap) - pin versions later - .github/workflows/ci.yml - minor
-2. MCP over HTTP in container mode runs without DNS-rebinding host checks (bind 0.0.0.0 inside); mitigated by publishing on 127.0.0.1 only - src/sw_dev_agent/mcp_server.py - minor
-3. FIXED: release.yml step "Create GitHub Release" only uploaded a workflow artifact; now a real GitHub Release with the CHANGELOG section as notes - .github/workflows/release.yml - minor
+| # | Finding | Location | Severity | Rework | Verified by |
+|---|---|---|---|---|---|
+| 1 | CI scanner images used `:latest` (semgrep, trivy, zap) | .github/workflows/ci.yml | minor | FIXED: pinned to version tag + digest (semgrep 1.184.0, trivy 0.76.2, zap-stable 2.17.0) | tests/test_workflows.py |
+| 2 | MCP over HTTP had no DNS-rebinding host/origin checks when bound to 0.0.0.0 (container) | src/sw_dev_agent/mcp_server.py | minor | FIXED: localhost-only Host/Origin checks for every bind address | tests/test_mcp_server.py::TestDnsRebindingProtection |
+| 3 | release.yml "Create GitHub Release" only uploaded a workflow artifact; CHANGELOG was never published | .github/workflows/release.yml | minor | FIXED: real GitHub Release with the CHANGELOG section as notes; release fails if the section is missing | tests/test_changelog.py |
+| 4 | CI "Test Python 3.13" ran on 3.12 without the [mcp] extra (.python-version pin); MCP tests skipped silently, coverage 78.99% -> CI red (found in PR #24 CI run) | .github/workflows/ci.yml, tests/test_mcp_server.py | major | FIXED: UV_PYTHON per matrix entry, interpreter check step, no silent skip | CI steps replayed locally in a fresh clone on 3.12 and 3.13: 254+ passed, 96% |
+
+Not a finding: the Socket security bot comment on PR #24 lists the five new
+direct dependencies (bandit, mcp, connexion, openapi-spec-validator, httpx)
+with scores 96-100 and no alerts.
 
 ```yaml
 phase: review
 status: done
-output: review-checklist.md - 0 critical, 0 major, 3 minor findings; R-CI-005/006 pending CI run
+output: review-checklist.md - 0 open findings (4 found, 4 reworked); R-CI-005/006 pending CI run
 ```

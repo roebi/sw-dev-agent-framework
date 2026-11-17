@@ -18,6 +18,7 @@ import httpx
 import mcp_types as types
 from mcp.server.lowlevel import Server
 from mcp.server.stdio import stdio_server
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.applications import Starlette
 
 from sw_dev_agent.api import SPEC_PATH, BuildInfo, create_app
@@ -25,6 +26,13 @@ from sw_dev_agent.catalog import SkillCatalog, default_skills_root
 from sw_dev_agent.server import MCP_PATH
 
 SERVER_NAME = "sw-dev-agent-framework"
+# DNS-rebinding protection for every bind address, including 0.0.0.0 in the
+# container (which publishes the port on 127.0.0.1 of the host only).
+LOCAL_TRANSPORT_SECURITY = TransportSecuritySettings(
+    enable_dns_rebinding_protection=True,
+    allowed_hosts=["127.0.0.1:*", "localhost:*", "[::1]:*"],
+    allowed_origins=["http://127.0.0.1:*", "http://localhost:*", "http://[::1]:*"],
+)
 HTTP_METHODS = ("get", "put", "post", "delete", "patch", "head", "options")
 
 
@@ -116,7 +124,9 @@ def _default_server(catalog: SkillCatalog | None, info: BuildInfo | None) -> Ser
 def create_http_app(host: str, catalog: SkillCatalog | None = None,
                     info: BuildInfo | None = None) -> Starlette:
     """Streamable HTTP MCP endpoint at MCP_PATH (R-MCP-004)."""
-    return _default_server(catalog, info).streamable_http_app(streamable_http_path=MCP_PATH, host=host)
+    return _default_server(catalog, info).streamable_http_app(
+        streamable_http_path=MCP_PATH, host=host, transport_security=LOCAL_TRANSPORT_SECURITY
+    )
 
 
 def run_stdio(catalog: SkillCatalog | None = None,

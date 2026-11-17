@@ -54,8 +54,18 @@ cloning this repository (issue #23).
 - CI tests Python 3.12 and 3.13 (3.11 removed; the package already
   required Python >= 3.12).
 
+### Security
+
+- MCP over streamable HTTP accepts only localhost `Host` and `Origin`
+  headers (DNS-rebinding protection), also when bound to 0.0.0.0 in the
+  container.
+- CI scanner images (semgrep, Trivy, ZAP) are pinned by version and
+  digest.
+
 ### Fixed
 
+- The CI job "Test Python 3.13" ran on Python 3.12 because of the
+  `.python-version` pin; the matrix version is now enforced.
 - The release workflow step "Create GitHub Release" only uploaded a
   workflow artifact; it now creates a real GitHub Release.
 - Skill spec compliance tests now cover all six skills, including

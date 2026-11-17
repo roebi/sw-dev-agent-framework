@@ -138,3 +138,33 @@ class TestHttpApp:
             )
         assert r.status_code == 200
         assert "sw-dev-agent-framework" in r.text
+
+
+INIT = {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {
+    "protocolVersion": "2025-06-18", "capabilities": {},
+    "clientInfo": {"name": "t", "version": "1"}}}
+MCP_HEADERS = {"Accept": "application/json, text/event-stream", "Content-Type": "application/json"}
+
+
+class TestDnsRebindingProtection:
+    """Review finding 2: host checks also when bound to 0.0.0.0 (container)."""
+
+    @pytest.mark.parametrize("bind_host", ["127.0.0.1", "0.0.0.0"])  # nosec B104 - test
+    def test_foreign_host_header_rejected(self, root, bind_host):
+        app = create_http_app(bind_host, catalog=SkillCatalog(root), info=INFO)
+        with TestClient(app, base_url="http://evil.example:8765") as c:
+            r = c.post(MCP_PATH, headers=MCP_HEADERS, json=INIT)
+        assert r.status_code in (403, 421)
+
+    @pytest.mark.parametrize("bind_host", ["127.0.0.1", "0.0.0.0"])  # nosec B104 - test
+    def test_localhost_host_header_allowed(self, root, bind_host):
+        app = create_http_app(bind_host, catalog=SkillCatalog(root), info=INFO)
+        with TestClient(app, base_url="http://localhost:8765") as c:
+            r = c.post(MCP_PATH, headers=MCP_HEADERS, json=INIT)
+        assert r.status_code == 200
+
+    def test_foreign_origin_rejected(self, root):
+        app = create_http_app("0.0.0.0", catalog=SkillCatalog(root), info=INFO)  # nosec B104
+        with TestClient(app, base_url="http://127.0.0.1:8765") as c:
+            r = c.post(MCP_PATH, headers={**MCP_HEADERS, "Origin": "http://evil.example"}, json=INIT)
+        assert r.status_code == 403

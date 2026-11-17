@@ -77,7 +77,7 @@ jobs:
 
       - name: Semgrep - fail on WARNING or ERROR (R-CI-004)
         run: |
-          docker run --rm -v "$PWD:/src" -w /src docker.io/semgrep/semgrep:latest \
+          docker run --rm -v "$PWD:/src" -w /src docker.io/semgrep/semgrep:1.184.0@sha256:cc1b68266f267878b39739373ea9985b9a78e5d64497dd875c8de100b22695ed \
             semgrep scan --config p/python --error --severity WARNING --severity ERROR \
             --metrics off src hatch_build.py
 
@@ -148,7 +148,7 @@ jobs:
       - name: Trivy image scan - fail on fixable HIGH/CRITICAL (R-CI-005)
         run: |
           podman save -o "$RUNNER_TEMP/image.tar" localhost/sw-dev-agent-framework:latest
-          podman run --rm -v "$RUNNER_TEMP:/scan" docker.io/aquasec/trivy:latest \
+          podman run --rm -v "$RUNNER_TEMP:/scan" docker.io/aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb \
             image --input /scan/image.tar --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1
 
       - name: OWASP ZAP API scan from openapi.json - fail on medium or higher (R-CI-006)
@@ -157,7 +157,7 @@ jobs:
           cp src/sw_dev_agent/openapi.json "$RUNNER_TEMP/zap/"
           sed -i 's#"url": "/"#"url": "http://127.0.0.1:8765/"#' "$RUNNER_TEMP/zap/openapi.json"
           podman run --rm --network host -v "$RUNNER_TEMP/zap:/zap/wrk:rw" \
-            docker.io/zaproxy/zap-stable:latest \
+            docker.io/zaproxy/zap-stable:2.17.0@sha256:9624669db72f54d86c4b46a7064518bd9bf79d8c61a4c31befa9923489f328af \
             zap-api-scan.py -t /zap/wrk/openapi.json -f openapi -J zap-report.json -I
           python3 - "$RUNNER_TEMP/zap/zap-report.json" <<'PY'
           import json, sys
