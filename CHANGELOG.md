@@ -55,7 +55,8 @@ cloning this repository (issue #23).
   already required Python >= 3.12).
 - All dependencies updated to their latest releases (pydantic 2.14,
   typer 0.29, ruff 0.17, hatchling 1.33, ...); GitHub Actions updated to
-  checkout v7, setup-uv v10, upload-artifact v7, download-artifact v8,
+  checkout v7, setup-uv v10.3.3 (pinned by commit; setup-uv no longer
+  publishes major tags), upload-artifact v7, download-artifact v8,
   pypi-publish v1.14.3 (pinned by commit); container base image
   python:3.14-slim with uv 0.13.8. Dependabot now also updates GitHub
   Actions and the Dockerfile base images.
