@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- MCP over streamable HTTP is stateless for all clients: clients using
+  the handshake-era protocol (up to 2025-11-25) no longer get a session;
+  every request stands alone, as with the stateless 2026-07-28 protocol.
+
 ### Fixed
 
 - `sw-dev-agent --help` showed "(requires the  extra)" for the `mcp`

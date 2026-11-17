@@ -144,6 +144,7 @@ INIT = {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {
     "protocolVersion": "2025-06-18", "capabilities": {},
     "clientInfo": {"name": "t", "version": "1"}}}
 MCP_HEADERS = {"Accept": "application/json, text/event-stream", "Content-Type": "application/json"}
+LEGACY_HEADERS = {**MCP_HEADERS, "MCP-Protocol-Version": "2025-06-18"}
 
 
 class TestDnsRebindingProtection:
@@ -168,3 +169,24 @@ class TestDnsRebindingProtection:
         with TestClient(app, base_url="http://127.0.0.1:8765") as c:
             r = c.post(MCP_PATH, headers={**MCP_HEADERS, "Origin": "http://evil.example"}, json=INIT)
         assert r.status_code == 403
+
+
+class TestStatelessHttp:
+    """Handshake-era clients are served stateless too: no session is kept,
+    every request stands alone (tools only read skills)."""
+
+    def test_initialize_returns_no_session_id(self, root):
+        app = create_http_app("127.0.0.1", catalog=SkillCatalog(root), info=INFO)
+        with TestClient(app, base_url="http://127.0.0.1:8765") as c:
+            r = c.post(MCP_PATH, headers=MCP_HEADERS, json=INIT)
+        assert r.status_code == 200
+        assert "mcp-session-id" not in r.headers
+
+    def test_tool_call_without_session_works(self, root):
+        app = create_http_app("127.0.0.1", catalog=SkillCatalog(root), info=INFO)
+        call = {"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+                "params": {"name": "get_skill", "arguments": {"name": "gather-requirements-en"}}}
+        with TestClient(app, base_url="http://127.0.0.1:8765") as c:
+            r = c.post(MCP_PATH, headers=LEGACY_HEADERS, json=call)
+        assert r.status_code == 200
+        assert "name: gather-requirements-en" in r.text
