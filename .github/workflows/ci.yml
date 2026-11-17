@@ -148,8 +148,17 @@ jobs:
       - name: Trivy image scan - fail on fixable HIGH/CRITICAL (R-CI-005)
         run: |
           podman save -o "$RUNNER_TEMP/image.tar" localhost/sw-dev-agent-framework:latest
-          podman run --rm -v "$RUNNER_TEMP:/scan" docker.io/aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb \
-            image --input /scan/image.tar --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1
+          # JSON report -> one GitHub annotation per finding (visible on the PR).
+          if ! podman run --rm -v "$RUNNER_TEMP:/scan" docker.io/aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb \
+              image --input /scan/image.tar --severity HIGH,CRITICAL --ignore-unfixed \
+              --format json --output /scan/trivy.json --exit-code 0 2> "$RUNNER_TEMP/trivy.err"; then
+            cat "$RUNNER_TEMP/trivy.err"
+            tail -n 15 "$RUNNER_TEMP/trivy.err" | sed 's/%/%25/g' | while IFS= read -r line; do
+              echo "::error title=Trivy did not run::${line}"
+            done
+            exit 1
+          fi
+          python3 .github/scripts/trivy_annotations.py "$RUNNER_TEMP/trivy.json"
 
       - name: OWASP ZAP API scan from openapi.json - fail on medium or higher (R-CI-006)
         run: |
@@ -166,6 +175,9 @@ jobs:
           bad = [a for a in alerts if int(a.get("riskcode", 0)) >= 2]
           for a in alerts:
               print(f"risk={a.get('riskcode')} {a.get('name')}")
+          for a in bad:
+              urls = ", ".join(i.get("uri", "") for i in a.get("instances", [])[:3])
+              print(f"::error title=ZAP risk {a.get('riskcode')} {a.get('name')}::{urls}")
           if bad:
               sys.exit(f"FAIL: {len(bad)} ZAP alert(s) with risk medium or higher")
           print("OK: no medium or higher ZAP alerts")
