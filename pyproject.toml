@@ -8,28 +8,28 @@ license-files = ["LICENSE", "LICENSES/*.txt"]
 requires-python = ">=3.12"
 dependencies = [
     "connexion[uvicorn]>=3.3.0",
-    "pydantic>=2.13.4",
+    "pydantic>=2.14.3",
     "pyyaml>=6.0.3",
     "rich>=15.0.0",
-    "typer>=0.25.1",
+    "typer>=0.29.1",
 ]
 
 [dependency-groups]
 dev = [
-    "bandit>=1.8",
-    "hatchling>=1.29.0",
-    "httpx>=0.28",
-    "openapi-spec-validator>=0.7",
-    "pip>=26.2.1",
-    "pip-audit>=2.10.0",
-    "pytest>=9.0.3",
+    "bandit>=1.9.4",
+    "hatchling>=1.33.0",
+    "httpx>=0.28.1",
+    "openapi-spec-validator>=0.9.0",
+    "pip>=26.3",
+    "pip-audit>=2.10.1",
+    "pytest>=9.2.0",
     "pytest-cov>=7.1.0",
-    "pyyaml>=6.0",
-    "ruff>=0.15.12",
+    "pyyaml>=6.0.3",
+    "ruff>=0.17.5",
 ]
 
 [build-system]
-requires = ["hatchling>=1.26,<1.33"]
+requires = ["hatchling>=1.33,<1.34"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]

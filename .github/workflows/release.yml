@@ -17,7 +17,7 @@ jobs:
     name: Tag matches package version
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Compare tag with pyproject.toml version
         run: |
           version="$(sed -n 's/^version = "\(.*\)"$/\1/p' pyproject.toml | head -n1)"
@@ -31,21 +31,21 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ci, check-version]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v10
         with:
           version: "latest"
 
-      - name: Set up Python 3.13
-        run: uv python install 3.13
+      - name: Set up Python 3.14
+        run: uv python install 3.14
 
       - name: Build package
         run: uv build
 
       - name: Store distribution packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: python-package-distributions
           path: dist/
@@ -62,13 +62,13 @@ jobs:
 
     steps:
       - name: Download distribution packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: python-package-distributions
           path: dist/
 
       - name: Publish to PyPI (Trusted Publishing - no API token needed)
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086  # v1.14.3
         with:
           attestations: true
 
@@ -79,10 +79,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Download distribution packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: python-package-distributions
           path: dist/

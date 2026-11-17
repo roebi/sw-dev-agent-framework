@@ -51,8 +51,14 @@ cloning this repository (issue #23).
 - Every skill directory contains only its `SKILL.md`; reference content
   that was previously pointed to under `references/` is now inlined.
 - New base dependency: `connexion[uvicorn]`.
-- CI tests Python 3.12 and 3.13 (3.11 removed; the package already
-  required Python >= 3.12).
+- CI tests Python 3.12, 3.13, 3.14 and 3.15 (3.11 removed; the package
+  already required Python >= 3.12).
+- All dependencies updated to their latest releases (pydantic 2.14,
+  typer 0.29, ruff 0.17, hatchling 1.33, ...); GitHub Actions updated to
+  checkout v7, setup-uv v10, upload-artifact v7, download-artifact v8,
+  pypi-publish v1.14.3 (pinned by commit); container base image
+  python:3.14-slim with uv 0.13.8. Dependabot now also updates GitHub
+  Actions and the Dockerfile base images.
 
 ### Security
 

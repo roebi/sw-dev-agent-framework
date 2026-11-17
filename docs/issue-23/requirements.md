@@ -173,7 +173,7 @@ R-CI-007: Run an end-to-end test that installs the built wheel in a clean enviro
 
 NFR-01: Testability - every requirement is covered by at least one automated test; line coverage stays >= 80 % (current CI gate).
 NFR-02: Performance - `GET /skills/{name}` responds in < 50 ms at the 95th percentile on a local machine (skills are small files).
-NFR-03: Portability - Python 3.12 and 3.13 on Linux; macOS and Windows for `serve` (container mode Linux/Podman only).
+NFR-03: Portability - Python 3.12, 3.13, 3.14 and 3.15 on Linux; macOS and Windows for `serve` (container mode Linux/Podman only).
 NFR-04: Security - the service is read-only, has no write routes, and never reads files outside the bundled skills directory.
 NFR-05: Reliability - unknown routes return 404, never 500; no stack traces in HTTP responses.
 NFR-06: Language - all committed text in English and ASCII-safe (existing CI dash check also covers new files).
@@ -219,3 +219,6 @@ NFR-07: Stack - Connexion v3 for the HTTP API (issue constraint).
   `test_skill_md_has_no_external_file_references`. This also makes Q6 moot:
   SKILL.md is the complete skill.
 - G-10: README Skills chapter lists orchestrate-sw-dev-en first, then the phase skills in the orchestrator's order; enforced by tests/test_readme.py.
+- G-12: all dependencies updated (pyproject.toml bounds, uv.lock, GitHub
+  Actions, Dockerfile base images, CI scanner images); CI matrix extended
+  to 3.14 and 3.15; Dependabot extended to github-actions and docker.
