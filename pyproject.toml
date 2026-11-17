@@ -5,6 +5,7 @@ description = "An agentic framework that does exactly one thing: software develo
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "connexion[uvicorn]>=3.3.0",
     "pydantic>=2.13.4",
     "pyyaml>=6.0.3",
     "rich>=15.0.0",
@@ -13,7 +14,10 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "bandit>=1.8",
     "hatchling>=1.29.0",
+    "httpx>=0.28",
+    "openapi-spec-validator>=0.7",
     "pip>=26.2.1",
     "pip-audit>=2.10.0",
     "pytest>=9.0.3",
@@ -34,3 +38,15 @@ testpaths = ["tests"]
 
 [project.scripts]
 sw-dev-agent = "sw_dev_agent.cli:app"
+
+[project.optional-dependencies]
+mcp = [
+    "mcp>=2.3.0",
+]
+
+[tool.hatch.build.targets.wheel.hooks.custom]
+
+[tool.hatch.build.targets.sdist.hooks.custom]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "skills", "tests", "hatch_build.py", "README.md", "CHANGELOG.md"]
