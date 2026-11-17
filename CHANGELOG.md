@@ -59,7 +59,7 @@ cloning this repository (issue #23).
   checkout v7, setup-uv v10.3.3 (pinned by commit; setup-uv no longer
   publishes major tags), upload-artifact v7, download-artifact v8,
   pypi-publish v1.14.3 (pinned by commit); container base image
-  python:3.14-slim with uv 0.13.8. Dependabot now also updates GitHub
+  python:3.15-slim with uv 0.13.8. Dependabot now also updates GitHub
   Actions and the Dockerfile base images.
 
 ### Security

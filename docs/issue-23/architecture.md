@@ -95,7 +95,7 @@ agent --MCP tools/call get_skill{name}--> MCP Server -> httpx ASGITransport
 | SAST | bandit, semgrep (`p/python`) | issue constraint |
 | Image scan | Trivy | issue constraint |
 | DAST | OWASP ZAP API scan with `openapi.json` | spec-driven, runs against the container |
-| Container | `python:3.14-slim`, non-root, wheel install | small, mirrors the PyPI install |
+| Container | `python:3.15-slim`, non-root, wheel install | small, mirrors the PyPI install |
 
 ## Testability Constraints
 
