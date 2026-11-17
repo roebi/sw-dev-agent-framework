@@ -218,3 +218,4 @@ NFR-07: Stack - Connexion v3 for the HTTP API (issue constraint).
   `test_skill_directory_contains_only_skill_md` and
   `test_skill_md_has_no_external_file_references`. This also makes Q6 moot:
   SKILL.md is the complete skill.
+- G-10: README Skills chapter lists orchestrate-sw-dev-en first, then the phase skills in the orchestrator's order; enforced by tests/test_readme.py.

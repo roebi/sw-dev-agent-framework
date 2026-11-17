@@ -16,12 +16,12 @@ it was built using the same TDD process it teaches agents to follow.
 
 | Phase | Skill | Purpose |
 |---|---|---|
+| Orchestrator | `orchestrate-sw-dev-en` | Coordinates all phases below, in this order |
 | 1. Requirements | `gather-requirements-en` | Goal -> testable requirements |
 | 2. Design | `design-architecture-en` | Requirements -> architecture |
 | 3. Implement | `apply-tdd-loop-en` | Architecture -> tested code |
 | 4. Review | `code-review-en` | Code -> reviewed + gated |
 | 5. Release | `release-sw-project-en` | Reviewed code -> tagged release |
-| Orchestrator | `orchestrate-sw-dev-en` | Coordinates all phases |
 
 All skills follow the [agentskills.io specification](https://agentskills.io/specification).
 
