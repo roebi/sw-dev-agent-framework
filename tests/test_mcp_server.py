@@ -5,9 +5,6 @@ from pathlib import Path
 
 import anyio
 import pytest
-
-pytest.importorskip("mcp")
-
 from mcp import Client
 from starlette.testclient import TestClient
 
