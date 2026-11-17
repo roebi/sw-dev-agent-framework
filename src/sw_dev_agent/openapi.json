@@ -3,7 +3,7 @@
   "info": {
     "title": "sw-dev-agent-framework skills API",
     "description": "Read-only local API that serves the bundled agent skills of sw-dev-agent-framework as unchanged Markdown. Start with GET /skills/orchestrator and follow the sub-skills it names via GET /skills/{name}.",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "license": {
       "name": "Code: MIT, Skills: CC BY-NC-SA 4.0"
     }
@@ -162,7 +162,7 @@
         "properties": {
           "package_version": {
             "type": "string",
-            "example": "2.0.0"
+            "example": "2.0.1"
           },
           "skills_commit": {
             "type": "string",

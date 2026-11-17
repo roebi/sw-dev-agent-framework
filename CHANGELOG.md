@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-11-17
+
+Patch release after 2.0.0: MCP over HTTP is stateless for every client,
+and a help text fix.
+
 ### Changed
 
 - MCP over streamable HTTP is stateless for all clients: clients using
@@ -130,7 +135,8 @@ cloning this repository (issue #23).
   requirements.md, with testability/atomicity/clarity validation gates
   and an out-of-scope section.
 
-[Unreleased]: https://github.com/roebi/sw-dev-agent-framework/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/roebi/sw-dev-agent-framework/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/roebi/sw-dev-agent-framework/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v0.1.1...v1.2.0
 [0.1.1]: https://github.com/roebi/sw-dev-agent-framework/releases/tag/v0.1.1
