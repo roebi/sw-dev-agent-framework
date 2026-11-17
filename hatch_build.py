@@ -11,7 +11,8 @@ from __future__ import annotations
 import json
 import os
 import shutil
-import subprocess  # nosec B404 - fixed git command, no user input
+# fixed git command, no user input
+import subprocess  # nosec B404
 import tempfile
 from pathlib import Path
 
@@ -27,7 +28,8 @@ def _git_head(root: Path) -> str | None:
     if git is None:
         return None
     try:
-        out = subprocess.run(  # nosec B603 - fixed command, no user input
+        # fixed command, no user input
+        out = subprocess.run(  # nosec B603
             [git, "-C", str(root), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         )
