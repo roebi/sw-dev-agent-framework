@@ -1,0 +1,225 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "sw-dev-agent-framework skills API",
+    "description": "Read-only local API that serves the bundled agent skills of sw-dev-agent-framework as unchanged Markdown. Start with GET /skills/orchestrator and follow the sub-skills it names via GET /skills/{name}.",
+    "version": "2.0.0",
+    "license": {
+      "name": "Code: MIT, Skills: CC BY-NC-SA 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "sw_dev_agent.api.handlers.get_health",
+        "summary": "Liveness check",
+        "description": "Returns status ok while the service is running.",
+        "responses": {
+          "200": {
+            "description": "Service is alive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "operationId": "sw_dev_agent.api.handlers.get_version",
+        "summary": "Package version and skills source commit",
+        "description": "Returns the installed package version and the git commit the bundled skills were built from, so an agent can tell which skill set it received.",
+        "responses": {
+          "200": {
+            "description": "Version information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Version"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skills": {
+      "get": {
+        "operationId": "sw_dev_agent.api.handlers.list_skills",
+        "summary": "List all bundled skills",
+        "description": "Returns name, description and API path of every bundled skill, sorted by name.",
+        "responses": {
+          "200": {
+            "description": "List of skills.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skills/orchestrator": {
+      "get": {
+        "operationId": "sw_dev_agent.api.handlers.get_orchestrator_skill",
+        "summary": "Get the orchestrator skill as Markdown",
+        "description": "Returns the SKILL.md of orchestrate-sw-dev-en unchanged. This is the entry point of the skill chain.",
+        "responses": {
+          "200": {
+            "description": "SKILL.md content.",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skills/{name}": {
+      "get": {
+        "operationId": "sw_dev_agent.api.handlers.get_skill",
+        "summary": "Get one skill by name as Markdown",
+        "description": "Returns the SKILL.md of the named skill unchanged.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "description": "Skill name, for example gather-requirements-en.",
+            "schema": {
+              "type": "string",
+              "maxLength": 64,
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SKILL.md content.",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid skill name.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No skill with this name is bundled.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Health": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["ok"]
+          }
+        },
+        "additionalProperties": false
+      },
+      "Version": {
+        "type": "object",
+        "required": ["package_version", "skills_commit"],
+        "properties": {
+          "package_version": {
+            "type": "string",
+            "example": "2.0.0"
+          },
+          "skills_commit": {
+            "type": "string",
+            "description": "Git commit SHA of the skill sources, or 'unknown' when built outside git.",
+            "example": "854430b5c1e0b3f4a7d2e9c6f1a8b3d5e7c9f0a1"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Skill": {
+        "type": "object",
+        "required": ["name", "description", "path"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "example": "/skills/gather-requirements-en"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SkillList": {
+        "type": "object",
+        "required": ["skills"],
+        "properties": {
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Skill"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Problem": {
+        "type": "object",
+        "required": ["title", "status"],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -12,6 +12,7 @@ SKILLS_DIR = os.path.join(os.path.dirname(__file__), "..", "skills")
 
 EXPECTED_SKILLS = [
     "orchestrate-sw-dev-en",
+    "apply-tdd-loop-en",
     "gather-requirements-en",
     "design-architecture-en",
     "code-review-en",
@@ -126,3 +127,24 @@ class TestSkillBody:
         assert "\u2013" not in content, (
             f"{skill_name}: SKILL.md contains en-dash (use hyphen-minus only)"
         )
+
+
+REFERENCE_RE = re.compile(r"`(references/[A-Za-z0-9_./-]+\.md)`")
+
+
+@pytest.mark.parametrize("skill_name", EXPECTED_SKILLS)
+def test_referenced_files_exist(skill_name):
+    path = os.path.join(SKILLS_DIR, skill_name, "SKILL.md")
+    with open(path, "r") as f:
+        content = f.read()
+    for ref in REFERENCE_RE.findall(content):
+        ref_path = os.path.join(SKILLS_DIR, skill_name, ref)
+        assert os.path.isfile(ref_path), f"{skill_name}: missing {ref}"
+
+
+def test_every_skill_directory_is_expected():
+    found = sorted(
+        d for d in os.listdir(SKILLS_DIR)
+        if os.path.isdir(os.path.join(SKILLS_DIR, d))
+    )
+    assert found == sorted(EXPECTED_SKILLS)
