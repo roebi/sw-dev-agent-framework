@@ -1,7 +1,7 @@
 # Handover-State.md
 skill: orchestrate-sw-dev-en
 goal: Serve the bundled skills via a local OpenAPI HTTP API (and optional MCP / container) from the installed PyPI module (issue #23).
-current_phase: release
+current_phase: release  # pipeline complete
 results:
   - phase: requirements
     status: done
@@ -16,5 +16,6 @@ results:
     status: done
     output: docs/issue-23/review-checklist.md - 5 findings, all reworked
   - phase: release
-    status: blocked
-    output: all CI gates green on PR #24 (run 44088137535); next: merge PR #24, tag v2.0.0 on main, push tag
+    status: done
+    output: v2.0.0 released 2026-11-17 via GitHub Release (run 44094372637, all jobs green); on PyPI with wheel + sdist; acceptance e2e passed against the PyPI package; issue #23 closed
+exit_condition_met: true

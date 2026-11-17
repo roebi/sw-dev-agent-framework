@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `sw-dev-agent --help` showed "(requires the  extra)" for the `mcp`
+  command: Rich markup swallowed `[mcp]`.
+
 ## [2.0.0] - 2026-11-17
 
 Major release: the skills are now usable with a single install, without
@@ -117,6 +124,7 @@ cloning this repository (issue #23).
   requirements.md, with testability/atomicity/clarity validation gates
   and an out-of-scope section.
 
+[Unreleased]: https://github.com/roebi/sw-dev-agent-framework/compare/v2.0.0...HEAD
 [2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v0.1.1...v1.2.0
 [0.1.1]: https://github.com/roebi/sw-dev-agent-framework/releases/tag/v0.1.1

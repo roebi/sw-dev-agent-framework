@@ -133,3 +133,15 @@ class TestExistingCommandsUnchanged:
         result = runner.invoke(app, ["--help"])
         for cmd in ("start", "status", "phases", "serve", "mcp"):
             assert cmd in result.output
+
+
+class TestHelpText:
+    """Bugfix: Rich markup swallowed '[mcp]' in the help text of 'mcp'."""
+
+    def test_main_help_shows_mcp_extra(self):
+        result = runner.invoke(app, ["--help"], env={"COLUMNS": "200"})
+        assert "requires the [mcp] extra" in result.output
+
+    def test_mcp_help_shows_mcp_extra(self):
+        result = runner.invoke(app, ["mcp", "--help"], env={"COLUMNS": "200"})
+        assert "requires the [mcp] extra" in result.output
