@@ -38,6 +38,12 @@ packages = ["src/sw_dev_agent"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
+[project.urls]
+Homepage = "https://github.com/roebi/sw-dev-agent-framework"
+Repository = "https://github.com/roebi/sw-dev-agent-framework"
+Changelog = "https://github.com/roebi/sw-dev-agent-framework/blob/main/CHANGELOG.md"
+Issues = "https://github.com/roebi/sw-dev-agent-framework/issues"
+
 [project.scripts]
 sw-dev-agent = "sw_dev_agent.cli:app"
 

@@ -52,7 +52,7 @@ Minor / follow-up (not blocking 2.0.0):
 
 1. Scanner images in CI use `:latest` (semgrep, trivy, zap) - pin versions later - .github/workflows/ci.yml - minor
 2. MCP over HTTP in container mode runs without DNS-rebinding host checks (bind 0.0.0.0 inside); mitigated by publishing on 127.0.0.1 only - src/sw_dev_agent/mcp_server.py - minor
-3. release.yml step "Create GitHub Release" only uploads a workflow artifact (pre-existing) - .github/workflows/release.yml - minor
+3. FIXED: release.yml step "Create GitHub Release" only uploaded a workflow artifact; now a real GitHub Release with the CHANGELOG section as notes - .github/workflows/release.yml - minor
 
 ```yaml
 phase: review

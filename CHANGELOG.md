@@ -34,6 +34,10 @@ cloning this repository (issue #23).
   SAST, Trivy image scan, OWASP ZAP API scan (DAST) against the running
   container, end-to-end test of the installed wheel. The release
   workflow runs all CI gates and checks that the tag matches the version.
+- Releases: the release workflow creates a GitHub Release whose notes are
+  this file's section for the tagged version, with wheel and sdist
+  attached, and fails if that section is missing. PyPI project links
+  include the changelog.
 - License files: `LICENSE`, `LICENSES/MIT.txt`,
   `LICENSES/CC-BY-NC-SA-4.0.txt`; package metadata declares
   `MIT AND CC-BY-NC-SA-4.0` (code MIT, skills CC BY-NC-SA 4.0).
@@ -52,6 +56,8 @@ cloning this repository (issue #23).
 
 ### Fixed
 
+- The release workflow step "Create GitHub Release" only uploaded a
+  workflow artifact; it now creates a real GitHub Release.
 - Skill spec compliance tests now cover all six skills, including
   `apply-tdd-loop-en`.
 - Skills no longer reference files that did not exist.
@@ -87,3 +93,7 @@ cloning this repository (issue #23).
 - `gather-requirements-en`: goal statement to numbered FR/NFR
   requirements.md, with testability/atomicity/clarity validation gates
   and an out-of-scope section.
+
+[2.0.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v1.2.0...v2.0.0
+[1.2.0]: https://github.com/roebi/sw-dev-agent-framework/compare/v0.1.1...v1.2.0
+[0.1.1]: https://github.com/roebi/sw-dev-agent-framework/releases/tag/v0.1.1
